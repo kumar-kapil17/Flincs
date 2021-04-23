@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "459346702407",
+    "project_id": "flincs-e2279",
+    "storage_bucket": "flincs-e2279.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459346702407:android:2932b7735f2a4f83b78162",
+        "android_client_info": {
+          "package_name": "com.flincs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459346702407-b4arpg3s9024ns7j9q6eah34qdqb9pgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flincs",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "459346702407-t5g31tbuo1o9giftpk0chhi2pa1emu8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcgNyizFyVmFkS8eO-8Tddlrk4RHEO5_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459346702407-t5g31tbuo1o9giftpk0chhi2pa1emu8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
