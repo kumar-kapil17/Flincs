@@ -78,7 +78,7 @@ function MeetupTabsScreen() {
     </MeetUpTabs.Navigator>
   );
 }
-
+ 
 const MeetStack = createStackNavigator();
 function MeetStackScreen({navigation}) {
   return (

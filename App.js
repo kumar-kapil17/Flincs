@@ -16,7 +16,7 @@ export default () => {
   );
 };
 
-
+console.disableYellowBox = true;
 
 // import React, { Component } from 'react';
 // import { View, Text } from 'react-native';

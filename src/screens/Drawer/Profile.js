@@ -158,7 +158,21 @@ useEffect(()=>{
       .then(() => {
         clearAsyncStorage()
           .then(() => {
-            navigation.replace('Login');
+            // navigation.replace('Login');
+            Alert.alert(
+              'Logout',
+              'Are you sure to log out',
+              [
+                {
+                  text: 'Yes',
+                  onPress: () => navigation.navigate('Login'),
+                },
+                {
+                  text: 'No',
+                },
+              ],
+              {cancelable: false},
+            )
           })
           .catch(err => console.log(err));
       })
@@ -171,7 +185,7 @@ useEffect(()=>{
         style={{
           flexDirection: 'row',
           alignItems: 'flex-end',
-          marginVertical: 30,
+          marginVertical: 10,
           padding: 10,
         }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -211,25 +225,27 @@ useEffect(()=>{
 
           <View style={[globalStyle.sectionCentered, styles.editImgContainer]}>
             <FontAwesome5
-              name="user-edit"
-              size={20}
+              name="plus-circle"
+              size={25}
               onPress={() => selectPhotoTapped()}
               color="white"
             />
           </View>
         </View>
       </View>
+      
       <View
         style={{
           flexDirection: 'row',
-          width: width,
+          width:'95%',
+          alignSelf:'center',
           borderBottomColor: 'white',
-          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomWidth:0.5,
           height: vh(60),
         }}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 18,
             color: Colors.white,
             paddingTop: 15,
             marginLeft: 10,
@@ -240,16 +256,19 @@ useEffect(()=>{
       <View
         style={{
           flexDirection: 'row',
-          width: width,
+          width:'95%',
+          alignSelf:'center',
           borderBottomColor: 'white',
-          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomWidth:0.5,
           height: vh(60),
+          
+          
         }}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 18,
             color: Colors.white,
-            paddingTop: 15,
+            paddingTop: 10,
             marginLeft: 10,
           }}>
           {mobile}
@@ -258,9 +277,10 @@ useEffect(()=>{
       <View
         style={{
           flexDirection: 'row',
-          width: width,
+          width:'95%',
+          alignSelf:'center',
           borderBottomColor: 'white',
-          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomWidth:0.5,
           height: vh(65),
           justifyContent:'space-between',
           paddingVertical:5
@@ -268,22 +288,20 @@ useEffect(()=>{
         }}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 18,
             color: Colors.white,
-            paddingTop: 15,
+            paddingTop: 10,
             marginLeft: 10,
           }}>
           MeetUp Requested 
         </Text>
-         <View style={{width:40,height:40,borderRadius:20,justifyContent:'center',alignItems:'center', marginTop: 3,backgroundColor:'white',marginRight:10}}>
+         <View style={{width:30,height:30,borderRadius:20,justifyContent:'center',alignItems:'center', marginTop: 5,backgroundColor:'white',marginRight:10}}>
          <Text
           style={{
             fontSize: 20,
             color:'#000',
             paddingTop: 2,
            
-
-          
           }}>
           {dataSource.length}
         </Text>
@@ -293,59 +311,49 @@ useEffect(()=>{
       <View
         style={{
           flexDirection: 'row',
-          width: width,
+          width:'95%',
+          alignSelf:'center',
           borderBottomColor: 'white',
-          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomWidth:0.5,
           height: vh(60),
         }}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 18,
             color: Colors.white,
-            paddingTop: 15,
+            paddingTop: 10,
             marginLeft: 10,
           }}>
           MeetUp Accepted
         </Text>
       </View>
+     
+    
       {/* <View
+      
         style={{
           flexDirection: 'row',
-          width: width,
+          width:'95%',
+          alignSelf:'center',
           borderBottomColor: 'white',
-          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomWidth:0.5,
           height: vh(60),
-        }}>
-        <Text
-          style={{
-            fontSize: 16,
-            color: Colors.white,
-            paddingTop: 15,
-            marginLeft: 10,
-          }}>
-          Upcoming MeetUps
-        </Text>
-      </View> */}
+         
+        }}/> */}
 
-      <TouchableWithoutFeedback
-        onPress={logout}
-        style={{
-          flexDirection: 'row',
-          width: width,
-          borderBottomColor: 'white',
-          borderBottomWidth: StyleSheet.hairlineWidth,
-          height: vh(60),
-        }}>
+      <TouchableOpacity
+      activeOpacity={1}
+         onPress={logout}
+         style={{height:40,width:100,borderWidth:1,borderColor:'white',borderRadius:5,justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:80}}
+       >
         <Text
-          style={{
-            fontSize: 16,
-            color: Colors.white,
-            paddingTop: 15,
-            marginLeft: 10,
-          }}>
-          Logout
+        style={{color:'white',fontSize:18}}>
+          LogOut
         </Text>
-      </TouchableWithoutFeedback>
+        </TouchableOpacity>
+
+
     </LinearGradient>
   );
 };
+ 

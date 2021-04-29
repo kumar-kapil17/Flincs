@@ -14,7 +14,7 @@ import {
   LayoutAnimation,
   KeyboardAvoidingView,
   SafeAreaView,
-  
+  Animated,
   Button,Modal
 } from 'react-native';
 
@@ -71,9 +71,70 @@ export default class MeetupScreen extends React.Component {
       fetchFilterData:[],
       loading:true,
       emptyText:null,
-      backgroundColor:null
+      backgroundColor:null,
+      text:'Add +',
+
+
+      active: 0,
+      xTabOne: 0,
+      xTabTwo: 0,
+      translateX: new Animated.Value(0),
+      translateXTabOne: new Animated.Value(0),
+      translateXTabTwo: new Animated.Value(width),
+      translateY: -1000,
+
+
+
+
+
+
     };
   }
+
+  handleSlide = type => {
+    let {
+        active,
+        xTabOne,
+        xTabTwo,
+        translateX,
+        translateXTabOne,
+        translateXTabTwo
+    } = this.state;
+    Animated.spring(translateX, {
+        toValue: type,
+        duration: 100
+    }).start();
+    if (active === 0) {
+        Animated.parallel([
+            Animated.spring(translateXTabOne, {
+                toValue: 0,
+                duration: 100
+            }).start(),
+            Animated.spring(translateXTabTwo, {
+                toValue: width,
+                duration: 100
+            }).start()
+        ]);
+    } else {
+        Animated.parallel([
+            Animated.spring(translateXTabOne, {
+                toValue: -width,
+                duration: 100
+            }).start(),
+            Animated.spring(translateXTabTwo, {
+                toValue: 0,
+                duration: 100
+            }).start()
+        ]);
+    }
+};
+
+
+
+
+
+
+
 
 
 
@@ -199,24 +260,7 @@ export default class MeetupScreen extends React.Component {
         });
       }, 2000);
 
-    //  submitUser(Id, title, choseStartDate, chosetime, contactName, description,num)
-    //    .then(result => {
-    //      console.log('meetup result ===>', result);
-
-    //      this.props.navigation.navigate('Meetup');
-
-    //       this.setState({
-    //         Id: null,
-    //         title: '',
-    //         choseStartDate: '',
-    //         chosetime: '',
-    //         contactName: '',
-    //         description: '',
-    //         num: '',
-    //         expanded: false,
-    //       });
-    //     })
-    //    .catch(err => console.log(err));
+   
     try {
       
       const mydata = await database().ref(`users/${Auth().currentUser.uid}/meetups`);
@@ -340,7 +384,7 @@ export default class MeetupScreen extends React.Component {
        console.log(error)
       
      }
-
+  //  this.changeText();
       
 }
 
@@ -353,6 +397,12 @@ export default class MeetupScreen extends React.Component {
       
 }
 
+
+  changeText=()=>{
+    this.setState({
+      text:'Select'
+    })
+  }
 
 
 
@@ -367,20 +417,20 @@ export default class MeetupScreen extends React.Component {
         alignItems: 'flex-start',
         justifyContent: 'center',
       }}>
-      <Text>{`${item.givenName} ${
+      <Text style={{fontSize:18}}>{`${item.givenName} ${
         item.familyName
       }`}</Text>
     </View>
 
     <TouchableOpacity
       style={styles.heading}
-      onPress = {()=>this.newContactList(item)}>
+      onPress = {()=>{this.newContactList(item),this.changeText()}}>
       <Text
         style={{
           fontSize: 16,
           color: 'white',
         }}>
-        Add +
+        {this.state.text}
       </Text>
     </TouchableOpacity>
   </View>
@@ -391,9 +441,9 @@ export default class MeetupScreen extends React.Component {
 
 
  renderFilterList = (item) => (
-     <TouchableOpacity style={{flex:1,backgroundColor:'#cccc',marginBottom:5,padding:10}}
+     <TouchableOpacity style={{flex:1,marginBottom:5,padding:10,borderRadius:5,borderWidth:1,marginVertical:10}}
         onPress = {()=>this.newFilterList(item)}>
-       <Text>{item.onflincs}</Text>
+       <Text style={{fontSize:18}}>{item.onflincs}</Text>
      </TouchableOpacity>
 )
 
@@ -518,6 +568,21 @@ export default class MeetupScreen extends React.Component {
       contactName,
    
     } = this.state;
+
+
+    let {
+      xTabOne,
+      xTabTwo,
+      translateX,
+      active,
+      translateXTabOne,
+      translateXTabTwo,
+      translateY
+  } = this.state;
+
+
+
+
     
       return (
         <ScrollView contentContainerStyle={{width, height}}>
@@ -606,7 +671,7 @@ export default class MeetupScreen extends React.Component {
                   <TouchableOpacity
                     onPress={() => this.setcontactModal(true)}
                     style={{
-                      padding: 20,
+                      padding: 15,
 
                       flexDirection: 'row',
                     }}>
@@ -656,22 +721,126 @@ export default class MeetupScreen extends React.Component {
                         X
                       </Text>
 
-                      <Container style={{flex: 1,}}>
-                        <Tabs>
-                          <Tab
-                            heading={
-                              <TabHeading style={{backgroundColor: 'white'}}>
-                                <Text
-                                  style={{color: '#000', fontWeight: 'bold'}}>
-                                  People on Flincs
-                                </Text>
-                              </TabHeading>
-                            }>
+                     
 
+                  <View
+                    style={{
+                       
+                    }}
+                   >
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            marginTop: 40,
+                            marginBottom: 20,
+                            height: 36,
+                            position: "relative"
+                        }}
+                    >
+                        <Animated.View
+                            style={{
+                                position: "absolute",
+                                width: "50%",
+                                height: "100%",
+                                top: 0,
+                                left: 0,
+                                backgroundColor: "gray",
+                                borderRadius: 4,
+                                transform: [
+                                    {
+                                        translateX
+                                    }
+                                ]
+                            }}
+                        />
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                borderWidth: 1,
+                                borderColor: "gray",
+                                borderRadius: 4,
+                                borderRightWidth: 0,
+                                borderTopRightRadius: 0,
+                                borderBottomRightRadius: 0
+                            }}
+                            onLayout={event =>
+                                this.setState({
+                                    xTabOne: event.nativeEvent.layout.x
+                                })
+                            }
+                            onPress={() =>
+                                this.setState({ active: 0 }, () =>
+                                    this.handleSlide(xTabOne)
+                                )
+                            }
+                        >
+                            <Text
+                                style={{
+                                    color: active === 0 ? "#fff" : "#4834DF",
+                                    fontSize:18
+                                }}
+                            >
+                                People on Flincs
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                borderWidth: 1,
+                                borderColor: "gray",
+                                borderRadius: 4,
+                                borderLeftWidth: 0,
+                                borderTopLeftRadius: 0,
+                                borderBottomLeftRadius: 0
+                            }}
+                            onLayout={event =>
+                                this.setState({
+                                    xTabTwo: event.nativeEvent.layout.x
+                                })
+                            }
+                            onPress={() =>
+                                this.setState({ active: 1 }, () =>
+                                    this.handleSlide(xTabTwo)
+                                )
+                            }
+                            >
+                            <Text
+                                style={{
+                                    color: active === 1 ? "#fff" : "#4834DF",
+                                    fontSize:18
+                                }}
+                            >
+                                Add Contacts
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
-                  {this.state.loading ? (
-                            <View style={{justifyContents:'center',marginTop: 30}}>
-                              {/* <Image source ={require('../../assets/images/empty.png')} style ={{width:60,height:60,tintColor:'#3399FF',alignSelf:'center'}}/> */}
+                    <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    >
+                        <Animated.View
+                            style={{
+                                // justifyContent: "center",
+                                // alignItems: "center",
+                                transform: [
+                                    {
+                                        translateX: translateXTabOne
+                                    }
+                                ]
+                            }}
+                            onLayout={event =>
+                                this.setState({
+                                    translateY: event.nativeEvent.layout.height
+                                })
+                            }
+                        >
+                           {this.state.loading ? (
+                            <View style={{justifyContents:'center',marginTop: 10}}>
+                             
                               <Text style={{fontSize:17,textAlign:'center',color:"#ccc",letterSpacing:1}}>{this.state.emptyText}</Text>
                             </View>
                           ) : (
@@ -683,17 +852,23 @@ export default class MeetupScreen extends React.Component {
                             style={{padding:10}}
                           />
                           )}
-                    
-                          </Tab>
-                          <Tab
-                            heading={
-                              <TabHeading style={{backgroundColor: 'white'}}>
-                                <Text
-                                  style={{color: '#000', fontWeight: 'bold'}}>
-                                  Add Contacts
-                                </Text>
-                              </TabHeading>
-                            }>
+
+                        </Animated.View>
+
+                        <Animated.View
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center",
+                                transform: [
+                                    {
+                                        translateX: translateXTabTwo
+                                    },
+                                    {
+                                        translateY: -translateY
+                                    }
+                                ]
+                            }}
+                        >
                             <SafeAreaView style={styles.container}>
                               <View style={styles.container}>
                                 <TextInput
@@ -709,9 +884,11 @@ export default class MeetupScreen extends React.Component {
                                 />
                               </View>
                             </SafeAreaView>
-                          </Tab>
-                        </Tabs>
-                      </Container>
+                        </Animated.View>
+                    </ScrollView>
+                </View>
+
+
                     </View>
                   </View>
                 </Modal>
@@ -723,6 +900,7 @@ export default class MeetupScreen extends React.Component {
                     justifyContent: 'space-around',
                     margin: vh(20),
                     width: vw(280),
+                    
                   }}
                   radio_props={this.state.data}
                   initial={0}
@@ -797,11 +975,11 @@ export default class MeetupScreen extends React.Component {
 
               <View
                 style={{
-                  width: width * 0.93,
+                  width: width * 0.94,
                   height: 80,
                   backgroundColor: '#F4F5F6',
                   padding: 5,
-                  marginHorizontal: 15,
+                  marginHorizontal: 10,
                 }}>
                 <TextInput
                   placeholder="Write your description..."
@@ -811,7 +989,7 @@ export default class MeetupScreen extends React.Component {
                   value={this.state.description}
                   onChangeText={description => this.setState({description})}
                   keyboardType="default"
-                  autoFocus={true}
+                  // autoFocus={true}
                   style={{width: 300, marginHorizontal: 5}}
                 />
               </View>
@@ -829,6 +1007,7 @@ export default class MeetupScreen extends React.Component {
                     marginTop: vh(10),
                     marginBottom: 5,
                     borderRadius: 8,
+                    // paddingVertical:20
                   }}>
                   <Text style={{fontSize: 16, color: Colors.white}}>
                     LET'S MEET
@@ -864,7 +1043,9 @@ export default class MeetupScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    height:'100%',
+    width:'100%'
   },
 
   heading: {
@@ -883,7 +1064,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     marginVertical: 20,
     borderRadius: 5,
-    width: 350,
+   
+    width: 300,
 
     backgroundColor: '#f4f5f6',
   },
@@ -901,7 +1083,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     height: vh(60),
     alignItems: 'center',
-    padding: 15,
+    paddingRight:25,
     margin: 10,
   },
   dividerStyle: {
@@ -909,6 +1091,9 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     height: vh(60),
     marginHorizontal: 10,
+    justifyContent:'center',
+
+    
   },
   centeredView: {
     flex: 1,
@@ -983,6 +1168,44 @@ const styles = StyleSheet.create({
     borderBottomEndRadius: 20,
   },
 });
+
+
+
+
+
+
+// import React, { Component } from 'react';
+// import { View, Text,TouchableOpacity } from 'react-native';
+
+// export default class MeetupScreen extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       text:'change'
+//     };
+//   }
+
+//   changeText=()=>{
+//     this.setState({
+//       text:'select'
+//     })
+//   }
+
+//   render() {
+//     return (
+//       <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+       
+//         <TouchableOpacity 
+//         onPress={this.changeText}
+//         style={{height:30,width:100,backgroundColor:'#349671',justifyContent:'center',alignItems:'center'}}
+//         >
+//           <Text>{this.state.text}</Text>
+//         </TouchableOpacity>
+
+//       </View>
+//     );
+//   }
+// }
 
 
 

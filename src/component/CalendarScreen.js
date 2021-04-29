@@ -126,7 +126,7 @@ else{
 
   render() {
     const arrayOfDates = this.state.dataSource.map(item => item);
-   
+    console.log('fetched:',arrayOfDates);
     var customMarkedDates = {};
     arrayOfDates.map(day => {
       customMarkedDates[day.selectedDay] = {
@@ -474,3 +474,618 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ///---Block or unblock date calendar code-------/////
+
+
+// import React from 'react';
+// import {
+//   StyleSheet,
+//   View,
+//   Text,
+//   TouchableOpacity,
+//   Image,
+//   Button,
+//   ActivityIndicator,
+//   Modal,
+//   ClippingRectangle,
+//   Pressable
+// } from 'react-native';
+// import {Calendar} from 'react-native-calendars';
+// import moment from 'moment';
+
+// import {vh, vw} from '../utility/dimensions';
+// import Colors from '../utility/colors';
+// import LocalImages from '../utility/localImages';
+// import {Auth, database} from '../Setup';
+// import Snackbar from 'react-native-snackbar';
+
+// // var _today = moment().format('YYYY-MM-DD');
+// const _format = 'YYYY-MM-DD';
+// export default class CalendarScreen extends React.Component {
+//   // initialState = {
+//   //   [_today]: {disabled: false},
+//   // };
+
+//   // state = {
+//   //   // _markedDates: this.initialState,
+//   //   visible: false,
+//   //   // modalVisible: false,
+//   //   // selectedDay: null,
+//   //   loading: true,
+//   //   mydates: [],
+//   //   dataSource:[],
+//   //   // SampleArray: [],
+//   //   _markedDates: {},
+//   //     modalVisible: false,
+//   //     selectedDay: [],
+//   //     SampleArray: [],
+//   //     currentDate: [],
+//   // };
+
+
+
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       visible: false,
+//       loading: true,
+//       mydates: [],
+//       dataSource:[],
+
+//       _markedDates: {},
+//       modalVisible: false,
+//       selectedDay: [],
+//       SampleArray: [],
+//       currentDate: [],
+//     };
+
+//     // this.get_cal_date();
+//   }
+
+
+
+// //   onDaySelect = day => {
+// //     const _selectedDay = moment(day.dateString).format('YYYY-MM-DD');
+// //     this.setState({
+// //       selectedDay: _selectedDay,
+// //       modalVisible: true,
+// //     });
+// //   };
+
+//   // AddItemsToArray = () => {
+
+//   //   this.state.SampleArray.push(this.state.selectedDay);
+//   //   database().ref(`users/${Auth().currentUser.uid}/blockdates`)
+//   //     .push({
+//   //       selectedDay: this.state.selectedDay,
+//   //     })
+//   //     .then(() => {
+//   //       Snackbar.show({
+//   //         text: 'Blocked Successfully',
+//   //         duration: Snackbar.LENGTH_SHORT,
+//   //       });
+//   //     })
+//   //     .catch(err => {
+//   //       console.log(err);
+//   //     });
+
+//   //   //console.log('Kapil', this.state.SampleArray);
+//   // };
+
+// //   saveDay = () => {
+// //     let selected = true;
+    
+// //     const {_markedDates, selectedDay} = this.state;
+
+// //     if (_markedDates[selectedDay]) {
+// //       selected = !_markedDates[selectedDay].selected;
+// //     }
+
+// //     this.setState({
+// //       modalVisible: false,
+// //       _markedDates,
+// //     });
+// //   };
+
+//   componentDidMount() {
+//     const mydata = database().ref('users/' + Auth().currentUser.uid).child('/blockdates')
+//     mydata.on('value', snapshot => {
+//       let data = snapshot.val();
+// if(data){
+//   let items = Object.values(data);
+//   this.setState({dataSource:items})
+// }
+// else{
+//   return null
+// }
+//       });
+  
+//   }
+
+
+// onDaySelect = (day) => {
+//   const _selectedDay = moment(day.dateString).format(_format);
+//   const {SampleArray} = this.state;
+
+//   if (SampleArray.includes(_selectedDay)) {
+//     this.setState({
+//       currentDate: _selectedDay,
+//       modalVisible: true,
+//       text: 'Are you sure to Remove date',
+//       title: 'Remove',
+//     });
+//     console.log('sampleArray', SampleArray);
+//   } else {
+//     this.setState({
+//       currentDate: _selectedDay,
+//       modalVisible: true,
+//       text: 'Are you sure to Add date',
+//       title: 'Add',
+//     });
+//   }
+//   console.log('sampleArray else part', SampleArray);
+// };
+
+// saveDay = () => {
+//   const {currentDate, SampleArray, _markedDates} = this.state;
+//   let newArr;
+//   let newMarkedDate = _markedDates;
+//   if (SampleArray.includes(currentDate)) {
+//     newArr = SampleArray.filter((v) => v !== currentDate);
+//     newMarkedDate = {
+//       ...this.state._markedDates,
+//       [currentDate]: {
+//         selected: false,
+//         selectedColor: '#ee0979',
+//       },
+//     };
+//   } else {
+//     newArr = [...SampleArray, currentDate];
+//     newMarkedDate = {
+//       ...this.state._markedDates,
+//       [currentDate]: {
+//         selected: true,
+//         selectedColor: '#ee0979',
+//       },
+//     };
+//     console.log('newArrr===>', newMarkedDate);
+//   }
+
+//   // -------------final call-------------
+//   this.setState(
+//     {
+//       SampleArray: newArr,
+//       _markedDates: newMarkedDate,
+//       modalVisible: false,
+//       currentDate: null,
+//     },
+//     () => {
+//       //api call
+//     },
+//   );
+// };
+
+// // writeUserDate=() => {
+// //   database().ref(`RegisteredTrainers/${Auth().currentUser.uid}`).update({
+// //     selectedDay: this.state.SampleArray,
+// //   });
+// //   Snackbar.show({
+// //     backgroundColor: '#248888',
+// //     text: 'Your Schedule updated Successfully',
+// //     duration: Snackbar.LENGTH_SHORT,
+// //   });
+// // }
+
+// AddItemsToArray = () => {
+
+//   // this.state.SampleArray.push(this.state.selectedDay);
+//   database().ref(`users/${Auth().currentUser.uid}/blockdates`)
+//     .update({
+//       // selectedDay: this.state.selectedDay,
+//       selectedDay: this.state.SampleArray,
+//     })
+//     .then(() => {
+//       Snackbar.show({
+//         text: 'Blocked Successfully',
+//         duration: Snackbar.LENGTH_SHORT,
+//       });
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+
+//   //console.log('Kapil', this.state.SampleArray);
+// };
+
+
+
+// // get_cal_date = async () => {
+// //   const {currentDate, SampleArray, _markedDates} = this.state;
+// //   let newArr;
+// //   let newMarkedDate = _markedDates;
+// //   // console.log('datasdsfshfsdkfhdskfhsdkfhskfhksf:', this.props.fetchdates);
+// //   // console.log('const arrayOfDates', this.props.fetchdates.map((item, i) => item.selectedDays))
+// //   console.log('datasdsfshfsdkfhdskfhsdkfhskfhksf:',this.state.dataSource);
+  
+// //   // if (
+// //   //   this.props.fetchdates == null ||
+// //   //   this.props.fetchdates === undefined ||
+// //   //   this.props.fetchdates === ''
+// //   // ) {
+// //   //   return <View></View>;
+// //   // }
+
+// //        const mydata = database().ref('users/' + Auth().currentUser.uid).child('/blockdates')
+// //     mydata.on('value', snapshot => {
+// //       let data = snapshot.val();
+// // if(data){
+// //   let items = Object.values(data);
+// //   this.setState({dataSource:items})
+// //   console.log('fetched dates:',this.state.dataSource)
+// // }
+// // else{
+// //   return null
+// // }
+// //       });
+
+
+
+
+
+
+// //   // const arrayOfDates = this.props.fetchdates.map((item) => item);
+// //   const arrayOfDates = this.state.dataSource.map(item => item);
+// //   console.log('ohooooo', arrayOfDates);
+// //   const NEW_Data = arrayOfDates;
+// //   // console.log('dnbcsdbjsnd',NEW_Data)
+
+// //   var customMarkedDates = {};
+// //   NEW_Data.map((day, i) => {
+// //     customMarkedDates[day] = {
+// //       selected: true,
+// //       marked: true,
+// //       selectedColor: '#ff6a00',
+// //     };
+// //   });
+
+// //   this.setState({_markedDates: customMarkedDates});
+// //   // this.setState({})
+
+// //   this.state = {
+// //     ...this.state,
+// //     _markedDates: customMarkedDates,
+// //     SampleArray: NEW_Data,
+// //   };
+
+
+// // };
+
+
+
+
+
+
+
+//   render() {
+//     const arrayOfDates = this.state.dataSource.map(item => item);
+   
+//     var customMarkedDates = {};
+//     arrayOfDates.map(day => {
+//       customMarkedDates[day.selectedDay] = {
+//         selected: true,
+//         marked: true,
+//         selectedColor: 'red',
+//       };
+//     });
+    
+//     const _today = moment().format('YYYY-MM-DD');
+
+//     return (
+//       <View style={styles.container}>
+//         {/* <Calendar
+//           // markedDates={this.state._markedDates}
+//           markedDates={customMarkedDates}
+//           markingType={'multi-dot'}
+//           onDayPress={this.onDaySelect}
+//           disabledDates={this.state.mydates}
+//           style={styles.calendar}
+//           hideExtraDays={true}
+//         /> */}
+
+//         <Calendar
+//           // markedDates={this.state._markedDates}
+//           markedDates={customMarkedDates}
+//           markingType={'multi-period'}
+//           onDayPress={this.onDaySelect}
+//           disabledDates={this.state.mydates}
+//           style={styles.calendar}
+//           // hideExtraDays={true}
+//           // minDate={_today}
+//         />
+
+
+
+//         <View style={styles.centeredView}>
+//           <Modal
+//             animationType="fade"
+//             transparent={true}
+//             visible={this.state.modalVisible}
+//             onRequestClose={() => {
+//               Alert.alert('Modal has been closed.');
+//             }}>
+//             <View style={styles.centeredView}>
+//               <View style={styles.modalView}>
+//                 <TouchableOpacity
+//                   style={{position: 'absolute', right: 10, top: 10}}
+//                   onPress={() => {
+//                     this.setState({modalVisible: !this.state.modalVisible});
+//                   }}>
+//                   <Image style={styles.closeStyle} source={LocalImages.CLOSE} />
+//                 </TouchableOpacity>
+//                 <TouchableOpacity
+//                   style={{position: 'absolute', right: 10, top: 10}}
+//                   onPress={() => {
+//                     this.setState({modalVisible: !this.state.modalVisible});
+//                   }}
+//                 />
+
+//                 {/* <TouchableOpacity
+//                   onPress={() => {
+//                     this.saveDay();
+//                     this.AddItemsToArray();
+//                   }}
+//                   style={[
+//                     styles.ButtonStyle,
+//                     {
+//                       backgroundColor: '#ddd',
+//                       borderColor: 'tranparent',
+//                       borderWidth: 0,
+//                       marginBottom: 10,
+//                     },
+//                   ]}>
+//                   <Text style={{fontSize: 15, padding: 10}}>
+//                     {this.state.selectedDay ? 'Block' : null}
+//                   </Text>
+
+//                  <Text style={{fontSize: 18, paddingVertical: 15}}>
+//                   {this.state.selectedDay ? (
+//                     <Text style={{fontSize: 20, fontFamily: 'Lato-Bold'}}>
+//                       {this.state.text}
+//                     </Text>
+//                   ) : (
+//                     <Text style={{fontSize: 20, fontFamily: 'Lato-Bold'}}>
+//                       {this.state.text}
+//                     </Text>
+//                   )}
+//                 </Text>
+
+
+
+//                 </TouchableOpacity> */}
+
+//              <View
+//                 style={{
+//                   padding: 30,
+//                   justifyContent: 'center',
+//                   alignItems: 'center',
+//                 }}>
+//                 <Text style={{fontSize: 18, paddingVertical: 15}}>
+//                   {this.state.selectedDay ? (
+//                     <Text style={{fontSize: 20, fontFamily: 'Lato-Bold'}}>
+//                       {this.state.text}
+//                     </Text>
+//                   ) : (
+//                     <Text style={{fontSize: 20, fontFamily: 'Lato-Bold'}}>
+//                       {this.state.text}
+//                     </Text>
+//                   )}
+//                 </Text>
+
+//                 <TouchableOpacity
+//                   // onPress={this.saveDay}
+//                   onPress={() => {
+//                     this.saveDay();
+//                     this.AddItemsToArray();
+//                   }}
+//                   style={[
+//                     styles.ButtonStyle,
+//                     {
+//                       backgroundColor: '#367896',
+//                       borderColor: 'black',
+//                       borderWidth: 0.5,
+//                       padding: 10,
+//                     },
+//                   ]}>
+//                   <Text style={{fontSize: 15, color: 'white'}}>
+//                     {this.state.selectedDay ? (
+//                       <Text>{this.state.title}</Text>
+//                     ) : (
+//                       <Text>{this.state.title}</Text>
+//                     )}
+//                   </Text>
+//                 </TouchableOpacity>
+//               </View>
+
+
+//               </View>
+//             </View>
+//           </Modal>
+//         </View>
+//       </View>
+//     );
+//   }
+// }
+
+
+
+// const styles = StyleSheet.create({
+//   calendar: {
+//     margin: 2,
+//     height: vh(440),
+//   },
+//   text: {
+//     textAlign: 'center',
+//     padding: 10,
+//     backgroundColor: 'lightgrey',
+//     fontSize: 16,
+//   },
+//   container: {
+//     flex: 1,
+//   },
+//   headerStyle: {
+//     flexDirection: 'row',
+//     width: vw(320),
+//     height: vh(70),
+//     backgroundColor: Colors.lightBlue,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+
+//   closeStyle: {
+//     width: vw(14),
+//     height: vh(14),
+//     resizeMode: 'contain',
+//     tintColor: 'white',
+//     // fontWeight:'bold'
+//   },
+
+//   centeredView: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginTop: 70,
+//   },
+//   modalView: {
+//     width: 300,
+//     height: 150,
+//     marginTop: 40,
+//     backgroundColor: 'white',
+//     borderRadius: 10,
+
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     shadowColor: '#000',
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 3.84,
+//     elevation: 5,
+//   },
+//   openButton: {
+//     backgroundColor: '#F194FF',
+//     borderRadius: 20,
+//     padding: 10,
+//     elevation: 2,
+//   },
+//   textStyle: {
+//     color: 'white',
+//     fontWeight: 'bold',
+//     textAlign: 'center',
+//   },
+//   modalText: {
+//     marginBottom: 15,
+//     textAlign: 'center',
+//   },
+
+//   closeStyle: {
+//     width: vw(18),
+//     height: vh(18),
+//     resizeMode: 'contain',
+//     tintColor: 'red',
+//     alignItems: 'flex-end',
+//   },
+
+//   ButtonStyle: {
+//     flexDirection: 'row',
+//     width: vw(180),
+//     height: vh(40),
+//     backgroundColor: Colors.lightBlue,
+//     justifyContent: 'space-evenly',
+//     alignItems: 'center',
+
+//     marginBottom: 15,
+//     borderRadius: 8,
+//   },
+// });

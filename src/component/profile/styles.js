@@ -42,7 +42,7 @@ const getDimensions = (key) => {
           height: 124,
           width: 124,
           borderRadius: 62,
-          borderWidth: 2,
+          // borderWidth: 2,
           borderColor: color.WHITE,
         };
       case "img":
